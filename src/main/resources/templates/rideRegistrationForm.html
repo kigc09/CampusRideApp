@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head}"></head>
+<body>
+<div th:replace="~{fragments::header-nav}" class="header-nav-container"></div>
+    <main>
+        <h2>Register Ride</h2>
+        <form method="post"
+              th:object="${ride}"
+              enctype="multipart/form-data"
+              class="register-form-container"
+        >
+            <label>Name: </label>
+            <input
+                    type="text"
+                    th:field="*{name}" />
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}">NAME ERROR</span><br>
+
+            <label>Pickup Location:</label>
+            <input
+                    type="text"
+                    th:field="*{pickupLocation}"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('pickupLocation')}"
+                  th:errors="*{pickupLocation}">LOCATION ERROR</span><br>
+
+            <label>Campus:</label>
+            <select th:field="*{campus}">
+                <option value="">Select Campus</option>
+                <option th:each="t: ${Campus}"
+                        th:value="${t.name()}"
+                        th:text="${t}">
+                </option>
+            </select>
+            <span th:if="${#fields.hasErrors('campus')}"
+                  th:errors="*{campus}">N/A</span>
+            <br>
+
+            <label>Date/Time: </label>
+            <input type="datetime-local"
+                   th:field="*{pickupTime}"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('pickupTime')}"
+                  th:errors="*{pickupTime}">TIME ERROR</span><br>
+
+            <label>Seats</label>
+            <input type="text"
+                   th:field="*{seatsAvailable}"/>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('seatsAvailable')}"
+                  th:errors="*{seatsAvailable}">SEATS AVAILABLE ERROR</span><br>
+            <button type="submit">Add ride</button>
+        </form>
+    </main>
+<footer th:replace="~{fragments ::  footer}" class="footer">
+    <p>&copy; Campus Ride Share 2026</p>
+    <a href="mailto:info@campusrideshare.com">Contact Us</a>
+</footer>
+</body>
+</html>

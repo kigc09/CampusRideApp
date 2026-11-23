@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace=" ~{fragments :: head}"></head>
+<body id="pageCenter">
+<div th:replace="~{fragments :: header-nav}"></div>
+<main>
+    <h2>RIDE </h2>
+    <p>Driver Name: <span th:text="${current.name}"></span></p>
+    <p>TIME: <span th:text="${current.pickupTime}"></span></p>
+    <p>CAMPUS: <span  th:text="${current.campus}"></span></p>
+    <p>SEATS: <span  th:text="${current.seatsAvailable}"></span></p>
+    <p>
+        <span class="ride-status"
+              th:classappend="${'status-' + current.status.name().toLowerCase()}"
+              th:text="${current.status}">
+
+        </span>
+    </p>
+    <form method="post"
+          th:action="@{/view/current/{id}/join(id=${current.id})}"
+          class="view-rides-btn-form">
+        <button type="submit"
+                th:disabled="${current.status.name() == 'CANCELLED' or current.status.name() == 'COMPLETED' or current.seatsAvailable <= 0}"
+                class="submitBtn">
+            Join Ride
+        </button>
+    </form>
+    <p th:if="${message}" th:text="${message}"></p>
+    <form method="post"
+          th:action="@{/view/current/{id}/cancel(id=${current.id})}"
+          th:if="${current.status.name() != 'CANCELLED' and current.status.name() != 'COMPLETED'}"
+          th:disabled="${current.status.name() == 'CANCELLED' or current.status.name() == 'COMPLETED' or current.seatsAvailable <= 0}"
+          class="view-rides-btn-form">
+        <button type="submit"
+                th:disabled="${current.status.name() == 'CANCELLED' or current.status.name() == 'COMPLETED' or current.seatsAvailable <= 0}"
+                onclick="return confirm('Are you sure you want to cancel?');"
+                class="cancelBtn">
+            Cancel Ride
+        </button>
+    </form>
+    <form method="GET"
+          th:action="@{'/view/current/'+${current.id}+'/edit'}"
+          class="view-rides-btn-form">
+        <button type="submit"
+                th:disabled="${current.status.name() == 'CANCELLED' or current.status.name() == 'COMPLETED' or current.seatsAvailable <= 0}"
+                class="modifyBtn">
+            Modify Ride
+        </button>
+    </form>
+    <form method="POST"
+          th:action="@{'/view/current/'+${current.id}+'/delete'}"
+          class="view-rides-btn-form">
+        <button type="submit"
+                th:disabled="${current.status.name() == 'CANCELLED' or current.status.name() == 'COMPLETED' or current.seatsAvailable <= 0}"
+                class="deleteBtn">Delete Ride</button>
+    </form>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

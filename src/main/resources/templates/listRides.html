@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head}"></head>
+<body>
+<div th:replace="~{fragments :: header-nav}" class="header-nav-container"></div>
+<main>
+    <h2>Ride List</h2>
+    <div th:if="${rideDB == null || rideDB.size() == 0}">
+        <p>Empty.</p>
+    </div>
+    <div class="ride-grid-container" th:unless="${rideDB == null || rideDB.size() == 0}">
+        <section class="ride-container" th:each="entry: ${rideDB}" th:with="current=${rideDB[entry.key]}">
+            <h3>
+                <a th:href="@{'/view/current/'+${current.id}}"
+                   th:text="${current.name}">
+                    RIDE NAME
+                </a>
+            </h3>
+            <p>Pick Up Location: <span th:text="${current.pickupLocation}"></span></p>
+            <p>CAMPUS: <span th:text="${current.campus}"></span></p>
+            <p>DATE/TIME: <span th:text="${#temporals.format(current.pickupTime, 'MMM dd, yyyy - hh:mm a')}"></span></p>
+            <p>SEATS AVAILABLE: <span th:text="${current.seatsAvailable}"></span></p>
+            <p>
+                <span class="ride-status"
+                      th:classappend="${'status-' + current.status.name().toLowerCase()}"
+                      th:text="${current.status}">
+                </span>
+            </p>
+            <form method="post" th:action="@{/view/current/{id}/join(id=${current.id})}">
+                <button type="submit"
+                        th:disabled="${current.status.name() == 'CANCELLED' or current.status.name() == 'COMPLETED' or current.seatsAvailable <= 0}"
+                        class="submitBtn">
+                    Join Ride
+                </button>
+            </form>
+            <p th:if="${message}" th:text="${message}"></p>
+        </section>
+    </div>
+</main>
+<footer th:replace="~{fragments ::  footer}" class="footer">
+    <p>&copy; Campus Ride Share 2026</p>
+    <a href="mailto:info@campusrideshare.com">Contact Us</a>
+</footer>
+</body>
+</html>

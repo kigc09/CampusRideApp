@@ -1,0 +1,243 @@
+/** BODY **/
+html, body{
+    margin: 0;
+    min-height: 100%;
+}
+body{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/** FRAGMENTS **/
+.header-nav-container{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+.header-nav-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+.header-nav-container header{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-nav-container h1{
+    font-size: 30px;
+    color: black;
+    letter-spacing: 1px;
+    flex-wrap: nowrap;
+}
+
+.header-nav-container nav{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 25px;
+    padding: 5px 10px;
+}
+
+.header-nav-container nav a{
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 25px;
+    text-decoration: none;
+    color: white;
+    background-color: dodgerblue;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+/**  HOME/MAIN  **/
+.main-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    gap: 15px;
+
+}
+
+img{
+    width: 100%;
+    height: auto;
+}
+
+.imageRight{
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.main-container h2, main-container p{
+    color: black;
+}
+
+/** RIDE LIST **/
+.ride-grid-container{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: 50px;
+}
+
+.ride-container{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 3px solid #686363;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ride-container p{
+    font-weight: bold;
+}
+
+.ride-container p span{
+    font-weight: normal;
+}
+
+.ride-container h3{
+    font-size: 28px;
+}
+
+.ride-container h3 a{
+    color: darkslateblue;
+    text-decoration: none;
+}
+
+.ride-container p {
+    font-size: 20px;
+}
+
+/** REGISTER FORM **/
+.register-form-container{
+    width: 90%;
+    max-width: 550px;
+    margin: 30px auto;
+    padding: 30px;
+
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background-color: white;
+
+    font-size: 16px;
+}
+
+.register-form-container h3{
+    background-color: white;
+}
+
+.register-form-container input, .register-form-container select, .register-form-container a {
+    width: 100%;
+    box-sizing:  border-box;
+
+    margin-top: 6px;
+    margin-bottom: 15px;
+    padding: 10px;
+
+    font-size: 20px;
+
+    gap: 10px;
+    text-decoration: none;
+    background: transparent;
+}
+
+.register-form-container select option{
+    background-color: white;
+}
+
+.register-form-container label{
+    font-size: 20px;
+    font-weight: bold;
+    background-color: white;
+}
+
+.register-form-container button{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: dodgerblue;
+    border-radius: 8px;
+    border: none;
+    padding: 10px 15px;
+}
+
+/** MODIFY PAGE **/
+.view-rides-btn-form{
+    display: block;
+
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 5px;
+
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    background-color: white;
+
+    gap: 10px;
+    text-decoration: none;
+}
+
+.addBtn, .cancelBtn, .modifyBtn, .deleteBtn, .submitBtn{
+    padding: 10px 20px;
+    font-size: 25px;
+    font-weight: bold;
+    width: auto;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.addBtn:disabled, .cancelBtn:disabled, .modifyBtn:disabled, .deleteBtn:disabled, .submitBtn:disabled{
+    background-color: #686363;
+    opacity: 1;
+    color: white;
+    cursor: not-allowed;
+}
+
+.submitBtn{
+    background-color: #2b9b30;
+}
+
+.cancelBtn{
+    background-color: darkorange;
+}
+
+.modifyBtn{
+    background-color: dodgerblue;
+}
+
+.deleteBtn{
+    background-color: red;
+}
+
+/** FOOTER **/
+footer{
+    padding: 10px 0;
+    text-align: center;
+    margin-top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
