@@ -6,13 +6,12 @@ import com.example.campusrideapp.domains.Status;
 import com.example.campusrideapp.services.RideService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -40,5 +39,21 @@ public class RideListController {
         model.addAttribute("status", status);
 
         return "listRides";
+    }
+
+    @GetMapping("/list")
+    public String joinRide(@PathVariable UUID id, Model model, Authentication authentication){
+        Map<UUID, Boolean> joinedRides = new HashMap<>();
+
+        for(Ride ride : rideService.getAllRides().values()){
+            boolean joined = rideService.hasUserJoined(
+                    ride.getId(),
+                    authentication.getName());
+            joinedRides.put(ride.getId(), joined);
+        }
+
+        model.addAttribute("joinedRides", joinedRides);
+        model.addAttribute("rideDB", rideService.getAllRides());
+        return "redirect:/view/current/" + id;
     }
 }

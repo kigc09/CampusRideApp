@@ -3,29 +3,52 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments :: head}"></head>
-<body id="pageCenter">
+<body class="signup-container">
 <div th:replace="~{fragments :: header-nav}" ></div>
 <main>
   <h2>Register as a New User</h2>
-  <form method="POST" th:object="${userRegistrationForm}" th:action="@{/user/register}">
-    Username: <input type="text" th:field="*{username}"/>
+  <form method="POST"
+        th:object="${userRegistrationForm}"
+        th:action="@{/user/register}"
+        class="signup-form">
+    <label>Full Name: </label>
+    <input type="text" th:field="*{fullname}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('fullname')}"
+          th:errors="*{fullname}">FULL NAME ERROR</span><br>
+
+    <label>Username: </label>
+    <input type="text" th:field="*{username}"/>
     <span class="validationError"
           th:if="${#fields.hasErrors('username')}"
           th:errors="*{username}">USERNAME ERROR</span><br>
-    Password: <input type="password" th:field="*{password}"/>
+
+    <label>Password: </label>
+    <input type="password" th:field="*{password}"/>
     <span class="validationError"
           th:if="${#fields.hasErrors('password')}"
           th:errors="*{password}">PASSWORD ERROR</span><br>
-    Confirm Password: <input type="password" th:field="*{confirmPassword}"/>
+
+    <label>Confirm Password: </label>
+    <input type="password" th:field="*{confirmPassword}"/>
     <span class="validationError"
           th:if="${#fields.hasErrors('confirmPassword')}"
           th:errors="*{confirmPassword}">NAME ERROR</span><br>
-    Full Name: <input type="text" th:field="*{fullname}"/>
-    <span class="validationError"
-          th:if="${#fields.hasErrors('fullname')}"
-          th:errors="*{fullname}">NAME ERROR</span><br>
 
-    <input type="submit" value="Register">
+    <label>Driver</label>
+    <input type="radio"
+           th:field="*{role}"
+           value="DRIVER"/>
+
+    <label>Passenger</label>
+    <input type="radio" th:field="*{role}"
+           value="PASSENGER"/>
+
+    <label>Both</label>
+    <input type="radio" th:field="*{role}"
+           value="BOTH"/>
+
+    <button type="submit">Create Account</button>
   </form>
 </main>
 <footer th:replace="~{fragments :: footer}"></footer>

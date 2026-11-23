@@ -34,7 +34,7 @@
                       sec:authorize="hasAnyRole('PASSENGER', 'BOTH')">
 
                     <button type="submit"
-                            th:disabled="${alreadyJoined or current.status.name() == 'CANCELLED' or current.status.name() == 'COMPLETED' or current.seatsAvailable <= 0}"
+                            th:disabled="${joinedRides != null or current.status.name() == 'CANCELLED' or current.status.name() == 'COMPLETED' or current.seatsAvailable <= 0}"
                             class="submitBtn">
                         Join Ride
                     </button>

@@ -3,9 +3,9 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments :: head}"></head>
-<body>
+<body class="login-container">
 <div th:replace="~{fragments :: header-nav}"></div>
-<main class="login-container">
+<main class="">
   <h2>Please Log In</h2>
 
   <form method="POST" th:action="@{/login}" id="loginForm">

@@ -95,6 +95,12 @@ public class RideService {
         return true;
     }
 
+    public boolean hasUserJoined(UUID rideId, String username){
+        Ride ride = rideRepo.findById(rideId).orElseThrow(() -> new RuntimeException("Ride not found"));
+
+        return ride.getPassengers().stream().anyMatch(passenger -> passenger.getUsername().equals(username));
+    }
+
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN','DRIVER', 'BOTH')")
     public boolean cancelRide(UUID id){

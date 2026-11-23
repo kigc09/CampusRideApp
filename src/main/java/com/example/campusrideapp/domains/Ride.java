@@ -32,6 +32,10 @@ public class Ride {
     @Column(nullable = false)
     private Status status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="driver_id")
+    private User driver;
+
     @ManyToMany
     @JoinTable( name="ride_passengers",
             joinColumns = @JoinColumn(name="ride_id"),

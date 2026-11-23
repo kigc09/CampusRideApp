@@ -1,6 +1,7 @@
 package com.example.campusrideapp.security;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
@@ -20,7 +21,27 @@ public class UserRegistrationForm {
     @NotBlank(message = "Your full name is required.")
     private String fullname;
 
+    @NotBlank(message = "Select a Role")
+    @Pattern(regexp="DRIVER|PASSENGER|BOTH")
+    private String role;
+
     public UserRegistrationForm(){
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getUsername() { return username; }
