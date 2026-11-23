@@ -3,10 +3,12 @@ package com.example.campusrideapp.web;
 import com.example.campusrideapp.domains.Campus;
 import com.example.campusrideapp.domains.Ride;
 import com.example.campusrideapp.domains.Status;
+import com.example.campusrideapp.domains.User;
 import com.example.campusrideapp.services.RideService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -40,7 +42,10 @@ public class RegisterRideController {
     }
 
     @PostMapping
-    public String processRideRegister(@Valid Ride ride, Errors errors, RedirectAttributes redirectAttributes) {
+    public String processRideRegister(@Valid Ride ride,
+                                      @AuthenticationPrincipal User user,
+                                      Errors errors,
+                                      RedirectAttributes redirectAttributes) {
         logger.debug("Ride received {}", ride);
 
         if (errors.hasErrors()) {
@@ -54,7 +59,7 @@ public class RegisterRideController {
          ride.getImage().setName(imageName);
          }**/
 
-        Ride addedRide = rideService.registerNewRide(ride);
+        Ride addedRide = rideService.registerNewRide(ride, user.getUsername());
         logger.info("Ride Registered {}", ride);
         return "redirect:/view/current/" + addedRide.getId();
     }

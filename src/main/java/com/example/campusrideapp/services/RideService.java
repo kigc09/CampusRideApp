@@ -1,5 +1,6 @@
 package com.example.campusrideapp.services;
 
+import com.example.campusrideapp.api.RidePatchRequestDTO;
 import com.example.campusrideapp.data.RideRepository;
 import com.example.campusrideapp.data.UserRepository;
 import com.example.campusrideapp.domains.Campus;
@@ -9,6 +10,8 @@ import com.example.campusrideapp.domains.User;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,7 @@ public class RideService {
     }
 
     @Transactional
-    public Ride registerNewRide(Ride ride){
+    public Ride registerNewRide(Ride ride, String username){
         /**if(ride.hasImage()){
          String imageName = ride.getImage().getImageName();
          imageName = ride.getName() + imageName.substring(imageName.lastIndexOf("."));
@@ -43,23 +46,16 @@ public class RideService {
 
     public Optional<Ride> getRideById(UUID id){ return rideRepo.findById(id); }
 
-    public Map<UUID, Ride> getAllRides(){
-        Map<UUID, Ride> db = new HashMap<>();
-        rideRepo.findAll().forEach(ride -> db.put(ride.getId(), ride));
-        return db;
+    public Page<Ride> getAllRides(Pageable pageable){
+        return rideRepo.findAll(pageable);
     }
 
-    public Map<UUID, Ride> searchRides(Campus campus, Status status){
-        Map<UUID, Ride> db = new HashMap<>();
-
-        boolean hasName = campus != null;
-        boolean hasType = status != null;
-
-        if (hasName && hasType){
-
-            return getAllRides();
+    public Page<Ride> searchRides(Campus campus, Pageable pageable){
+        if (campus != null){
+            return  rideRepo.findByCampus(campus, pageable);
+        } else{
+            return rideRepo.findAll(pageable);
         }
-        return db;
     }
 
     @Transactional
@@ -131,6 +127,42 @@ public class RideService {
         modifyExistingRide.setPickupTime(modifyRide.getPickupTime());
         modifyExistingRide.setSeatsAvailable(modifyRide.getSeatsAvailable());
         rideRepo.save(modifyExistingRide);
+    }
+
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MNGR')")
+    public Optional<Ride> patchUpdate(UUID id, RidePatchRequestDTO requestDTO){
+        Optional<Ride> lookupItem = rideRepo.findById(id);
+
+        if(lookupItem.isEmpty()){
+            return Optional.empty();
+        }
+
+        Ride ride = lookupItem.get();
+
+        if (requestDTO.getName() != null){
+            ride.setName(requestDTO.getName());
+        }
+        if (requestDTO.getPickupLocation() != null){
+            ride.setPickupLocation(requestDTO.getPickupLocation());
+        }
+
+        if (requestDTO.getPickupTime() != null){
+            ride.setPickupTime(requestDTO.getPickupTime());
+        }
+        if (requestDTO.getCampus() != null){
+            ride.setCampus(requestDTO.getCampus());
+        }
+        if (requestDTO.getSeatsAvailable() != 0){
+            ride.setSeatsAvailable(requestDTO.getSeatsAvailable());
+        }
+        if (requestDTO.getStatus() != null){
+            ride.setStatus(requestDTO.getStatus());
+        }
+
+        Ride updateItem = rideRepo.save(ride);
+
+        return Optional.of(updateItem);
     }
 
     @Transactional

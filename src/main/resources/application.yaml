@@ -12,3 +12,11 @@ spring:
       file-name-pattern: "logs/ride-system-%d{yyyy-MM-dd}.%i.log"
       max-file-size: 10MB
       max-history: 30
+
+ride:
+  security:
+    jwt:
+      secret: "${JWT_SECRET}"
+      issuer: "ride-system"
+      audience: "ride-system-api"
+      token-duration: "${JWT_DURATION:8h}"

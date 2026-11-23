@@ -1,6 +1,7 @@
 package com.example.campusrideapp.domains;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,9 +16,9 @@ public class Ride {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(nullable = false)
+    @NotBlank(message = "A name is required")
     private String name;
-    @Column(nullable = false)
+    @NotBlank(message = "Pickup location is required")
     private String pickupLocation;
     @NotNull
     @Column(name = "pickup_time")
@@ -27,8 +28,8 @@ public class Ride {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Campus campus;
-    @Column(nullable = false)
     private int seatsAvailable;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
 

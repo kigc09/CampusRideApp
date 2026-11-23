@@ -6,11 +6,27 @@
 <body>
 <div th:replace="~{fragments :: header-nav}" class="header-nav-container"></div>
 <main>
+    <div>
+        <h3 class="searchFilter">Search or Filter Items</h3>
+        <form method="GET" th:action="@{/list}">
+            <label>Campus:</label>
+            <select >
+                <option value="">Select Campus</option>
+                <option th:each="t: ${Campus}"
+                        th:value="${t.name()}"
+                        th:text="${t}">
+                </option>
+            </select>
+
+            <input type="submit" value="Search/Filter">
+            <a th:href="@{/list}">Clear Search/Filter</a>
+        </form>
+    </div>
     <h2>Ride List</h2>
-    <div th:if="${rideDB == null || rideDB.size() == 0}">
+    <div th:if="${rideDB == null or rideDB.isEmpty()}">
         <p>Empty.</p>
     </div>
-    <div class="ride-grid-container" th:unless="${rideDB == null || rideDB.size() == 0}">
+    <div class="ride-grid-container" th:unless="${rideDB == null or rideDB.isEmpty()}">
         <section class="ride-container" th:each="entry: ${rideDB}" th:with="current=${rideDB[entry.key]}">
             <h3>
                 <a th:href="@{'/view/current/'+${current.id}}"

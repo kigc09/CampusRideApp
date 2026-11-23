@@ -1,6 +1,9 @@
 package com.example.campusrideapp.data;
 
+import com.example.campusrideapp.domains.Campus;
 import com.example.campusrideapp.domains.Ride;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +12,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.UUID;
 
 public interface RideRepository extends JpaRepository<Ride, UUID> {
+    Page<Ride> findByCampus(Campus campus, Pageable pageable);
+
     @Modifying
     @Query("""
             UPDATE Ride r
