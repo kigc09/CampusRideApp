@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +31,13 @@ public class Ride {
     private int seatsAvailable;
     @Column(nullable = false)
     private Status status;
+
+    @ManyToMany
+    @JoinTable( name="ride_passengers",
+            joinColumns = @JoinColumn(name="ride_id"),
+            inverseJoinColumns = @JoinColumn(name="user_id")
+    )
+    private Set<User> passengers = new HashSet<>();
 
     public Ride(){}
 
@@ -96,6 +105,14 @@ public class Ride {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Set<User> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(Set<User> passengers) {
+        this.passengers = passengers;
     }
 
     @Override

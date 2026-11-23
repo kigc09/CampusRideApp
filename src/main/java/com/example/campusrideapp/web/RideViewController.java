@@ -6,6 +6,7 @@ import com.example.campusrideapp.domains.RideDB;
 import com.example.campusrideapp.domains.Status;
 import com.example.campusrideapp.services.RideService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +34,16 @@ public class RideViewController {
     private RideDB rideDB;
 
     @GetMapping("/current/{id}")
-    public String viewRides(@PathVariable UUID id, Model model){
-        Optional<Ride> ride = rideService.getRideById(id);
-        if(ride.isEmpty()){
-            logger.debug("Ride with id: {} not found to view", id);
-            return "redirect:/list";
+    public String viewRides(@PathVariable UUID id, Model model, Authentication authentication){
+        Ride current = rideService.getRideById(id).orElseThrow(() -> new RuntimeException("Ride not found."));
+        boolean alreadyJoined = false;
+
+        if(authentication != null && authentication.isAuthenticated()){
+            alreadyJoined = current.getPassengers().stream().anyMatch(passenger -> passenger.getUsername().equals(authentication.getName()));
         }
-        Ride current = ride.get();
 
         model.addAttribute("current", current);
-        model.addAttribute("pageTitle", current.getName());
+        model.addAttribute("alreadyJoined", alreadyJoined);
 
         return "viewRides";
     }
@@ -78,8 +79,10 @@ public class RideViewController {
     }
 
     @PostMapping("/current/{id}/join")
-    public String joinRide(@PathVariable UUID id, RedirectAttributes redirectAttributes){
-        boolean joined = rideService.joinRide(id);
+    public String joinRide(@PathVariable UUID id,
+                           Authentication authentication,
+                           RedirectAttributes redirectAttributes){
+        boolean joined = rideService.joinRide(id, authentication.getName());
 
         if(joined) {
             redirectAttributes.addFlashAttribute("message", "Joined Successfully");

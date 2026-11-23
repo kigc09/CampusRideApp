@@ -15,8 +15,7 @@
                   th:action="@{/view/current/{id}/edit(id=${current.id})}"
                   th:object="${ride}"
                   enctype="multipart/form-data"
-                  class="register-form-container"
-            >
+                  class="register-form-container">
                 <label>Name: </label>
                 <input
                         type="text"
@@ -60,17 +59,6 @@
                       th:errors="*{seatsAvailable}">SEATS AVAILABLE ERROR</span><br>
                 <button type="submit">Add ride</button>
             </form>
-        </div>
-
-        <div>
-            <div >
-                <form method="POST" th:object="${ride}" th:action="@{'/view/current/'+${ride.id}+'/rides'}" enctype="multipart/form-data">
-
-
-                    <button>Update Inventory</button>
-
-                </form>
-            </div>
         </div>
     </div>
 </main>

@@ -1,6 +1,7 @@
 package com.example.campusrideapp.services;
 
 import com.example.campusrideapp.data.RideRepository;
+import com.example.campusrideapp.data.UserRepository;
 import com.example.campusrideapp.domains.Campus;
 import com.example.campusrideapp.domains.Ride;
 import com.example.campusrideapp.domains.Status;
@@ -8,6 +9,7 @@ import com.example.campusrideapp.domains.User;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,8 +21,12 @@ import java.util.UUID;
 public class RideService {
     private static final Logger logger = LoggerFactory.getLogger(RideService.class);
     private final RideRepository rideRepo;
+    private final UserRepository userRepo;
 
-    public RideService(RideRepository rr){ rideRepo = rr;}
+    public RideService(RideRepository rr, UserRepository ur){
+        rideRepo = rr;
+        userRepo = ur;
+    }
 
     @Transactional
     public Ride registerNewRide(Ride ride){
@@ -57,13 +63,16 @@ public class RideService {
     }
 
     @Transactional
-    public boolean joinRide(UUID id){
-        Optional<Ride> optionalRide = rideRepo.findById(id);
-        if (optionalRide.isEmpty()){
+    @PreAuthorize("hasAnyRole('PASSENGER', 'BOTH') ")
+    public boolean joinRide(UUID id, String username){
+        Ride ride = rideRepo.findById(id).orElseThrow(() -> new RuntimeException("Ride was not found."));
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User was not found."));
+
+        boolean alreadyJoined = ride.getPassengers().stream().anyMatch(passenger -> passenger.getId().equals(user.getId()));
+
+        if (alreadyJoined){
             return false;
         }
-
-        Ride ride = optionalRide.get();
 
         if(ride.getStatus() != Status.AVAILABLE){
             return false;
@@ -79,11 +88,15 @@ public class RideService {
             ride.setStatus(Status.FULL);
         }
 
+        ride.getPassengers().add(user);
+        ride.setSeatsAvailable(ride.getSeatsAvailable()-1);
+
         rideRepo.save(ride);
         return true;
     }
 
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN','DRIVER', 'BOTH')")
     public boolean cancelRide(UUID id){
         Optional<Ride> optionalRide = rideRepo.findById(id);
         if (optionalRide.isEmpty()){
@@ -102,6 +115,7 @@ public class RideService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN','DRIVER', 'BOTH') ")
     public void updateRide(UUID id, Ride modifyRide){
         Ride modifyExistingRide = rideRepo.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Ride has not been found."));
@@ -114,6 +128,7 @@ public class RideService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN','DRIVER', 'BOTH') ")
     public boolean deleteRideById(UUID id){
         if(!rideRepo.existsById(id)){
             logger.info("Error, no ride with ID: {}", id);
