@@ -5,10 +5,13 @@
 <head th:replace="~{fragments :: head}"></head>
 <body class="login-container">
 <div th:replace="~{fragments :: header-nav}"></div>
-<main class="">
+<main class="login-form-container">
   <h2>Please Log In</h2>
 
-  <form method="POST" th:action="@{/login}" id="loginForm">
+  <form method="POST"
+        th:action="@{/login}"
+        id="loginForm"
+        class="login-form">
     <label for="username">Username:</label>
     <input type="text" name="username" id="username" /><br>
     <label for="password">Password:</label>
@@ -19,6 +22,9 @@
   <h2>Don't have an account?</h2>
   <a th:href="@{/user/register}">Sign Up</a>
 </main>
-<footer th:replace="~{fragments :: footer}"></footer>
+<footer th:replace="~{fragments ::  footer}" class="footer">
+  <p>&copy; Campus Ride Share 2026</p>
+  <a href="mailto:info@campusrideshare.com">Contact Us</a>
+</footer>
 </body>
 </html>

@@ -6,7 +6,7 @@
 <body>
 <div th:replace="~{fragments::header-nav}" class="header-nav-container"></div>
     <main>
-        <h2>Register Ride</h2>
+        <h2 class="register-h2">Register Ride</h2>
         <form method="post"
               th:object="${ride}"
               th:action="@{/register}"

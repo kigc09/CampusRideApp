@@ -4,7 +4,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "ride")
 public class RideProperties {
+
     private int pageSize = 6;
+    private int cancelRide;
 
     public int getPageSize() {
         return pageSize;

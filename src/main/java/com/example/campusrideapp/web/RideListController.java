@@ -44,7 +44,7 @@ public class RideListController {
                             Model model){
         Pageable pageable = PageRequest.of(page, rideProperties.getPageSize(), Sort.by("name").ascending().and(Sort.by("id")));
         Page<Ride> rideDB = rideService.searchRides(campus, pageable);
-        model.addAttribute("rideDB", rideDB);
+        model.addAttribute("rideDB", rideDB.getContent());
         model.addAttribute("campus", campus);
         model.addAttribute("status", status);
 

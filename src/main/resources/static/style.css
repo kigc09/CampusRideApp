@@ -67,8 +67,7 @@ body{
     justify-content: center;
     align-content: center;
     text-align: center;
-    gap: 15px;
-
+    gap: 40px;
 }
 
 img{
@@ -85,6 +84,20 @@ img{
 
 .main-container h2, main-container p{
     color: black;
+    margin-top: 10px ;
+}
+
+.main-container h2{
+    font-size: 60px;
+}
+
+.main-container p{
+    font-size: 30px;
+    padding-top: 20px;
+}
+
+.main-container a{
+    padding-top: 50px;
 }
 
 /** RIDE LIST **/
@@ -103,10 +116,16 @@ img{
     border-radius: 8px;
     padding: 25px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .ride-container p{
     font-weight: bold;
+    font-size: 30px;
 }
 
 .ride-container p span{
@@ -126,7 +145,19 @@ img{
     font-size: 20px;
 }
 
+.register-form-container{
+
+}
+
+.register-form-container, label, input, span, select{
+    font-size: 24px;
+}
 /** REGISTER FORM **/
+.register-h2{
+    text-align: center;
+    font-size: 50px;
+}
+
 .register-form-container{
     width: 90%;
     max-width: 550px;
@@ -232,11 +263,44 @@ img{
     background-color: red;
 }
 
+.search-form{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+
+}
+
+.search-form label, .search-form select, .search-form option{
+    padding: 10px;
+    font-size: 20px;
+
+}
+
 /** LOGIN **/
 .login-container{
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px 20px;
+    min-height: 50vh;
+}
+
+.login-form-container label{
+    font-size: 40px;
+}
+
+.login-form-container input{
+    width: 100%;
+    padding: 10px;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 0;
 }
 
 /** SIGN UP  **/

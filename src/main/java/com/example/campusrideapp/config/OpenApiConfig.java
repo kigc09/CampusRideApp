@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(
-        info = @Info(title="Item Registration API",
+        info = @Info(title="Ride Registration API",
                 version="0",
-                description="REST API for registering and managing items"))
+                description="REST API for registering and managing rides"))
 @SecurityScheme(
         name="bearerAuth",
         type= SecuritySchemeType.HTTP,
